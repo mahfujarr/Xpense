@@ -1,0 +1,89 @@
+body {
+  background: #f8f9fa;
+  color: #222;
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.login {
+  background: #fff;
+  max-width: 400px;
+  margin: 3rem auto 2rem auto;
+  padding: 2.5rem 2rem 2rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+}
+
+.login h2 {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+}
+
+.form-group {
+  margin-bottom: 1.3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-size: 1rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: #222;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus {
+  background: #e9ecef;
+  box-shadow: 0 0 0 2px #007bff;
+}
+
+.form-group button[type="submit"] {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.form-group button[type="submit"]:hover {
+  background: #0056b3;
+  color: #fff;
+}
+
+.form-group p {
+  text-align: center;
+  color: #555;
+  margin: 0.5rem 0 0 0;
+  font-size: 0.98rem;
+}
+
+.form-group a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.form-group a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
