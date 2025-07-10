@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php $title = "Login | Xpense"; ?>
 <?php include '../components/head.php'; ?>
 <?php include '../components/navbar.php'; ?>
 

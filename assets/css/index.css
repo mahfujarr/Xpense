@@ -46,12 +46,14 @@ body {
   margin-bottom: 1rem;
   letter-spacing: 1px;
   font-size: 2.2rem;
+  cursor: default;
 }
 .hero p {
   font-size: 1.2em;
   color: #555;
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
+  cursor: default;
 }
 .hero a {
   color: #fff;
@@ -68,12 +70,14 @@ body {
   margin: 0 0.5rem;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
+  transition: transform 0.2s;
 }
 .hero a:hover {
   background-color: #0056b3;
   transform: scale(1.1);
   background: #0056b3;
   color: #fff;
+  transform: scale(1.08);
 }
 .features {
   width: 100%;
@@ -129,7 +133,7 @@ body {
   font-size: 1.1rem;
   text-align: center;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
   flex: 1 1 40%;
   min-width: 180px;
   max-width: 45%;
@@ -140,11 +144,11 @@ body {
   font-size: 1.07rem;
   text-align: center;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: background 0.2s;
 }
 .features li:hover {
   background: #e2e6ea;
   cursor: default;
+  transform: scale(1.06);
 }
 @media (max-width: 900px) {
   .main-content {
