@@ -1,3 +1,4 @@
+<?php require_once 'login_logic.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <?php $title = "Login | Xpense"; ?>
@@ -10,6 +11,13 @@
     <div class="main-content">
         <div class="login">
             <h2>Login</h2>
+            <?php if (!empty($errors)): ?>
+                <div class="form-group" style="color: red;">
+                    <?php foreach ($errors as $error): ?>
+                        <div><?php echo $error; ?></div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
             <form action="login.php" method="post">
                 <div class="form-group">
                     <label for="username">Username:</label>
