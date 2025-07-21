@@ -10,8 +10,8 @@ if (session_status() === PHP_SESSION_NONE) session_start();
         <ul class="nav-links">
             
             <?php if (isset($_SESSION['user_id'])): ?>
-                <li><a href="/public/dashboard.php">Dashboard</a></li>
-                <li><a href="/public/auth/logout.php">Logout</a></li>
+                <li><a href="/public/dashboard.php"><?php echo $username ?></a></li>
+                <li class="logout"><a href="/public/auth/logout.php">Logout</a></li>
             <?php else: ?>
                 <li><a href="/index.php">Home</a></li>
                 <li><a href="/public/auth/login.php">Login</a></li>
