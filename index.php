@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 if (isset($_SESSION['user_id'])) {
     header("Location: /public/dashboard.php");
@@ -16,7 +16,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="hero">
             <h1>Welcome to Xpense</h1>
             <p>Your personal expense tracker</p>
-            <a href="./public/auth/login.php">Login</a> | <a href="register.php">Register</a>
+            <a href="./public/auth/login.php">Login</a> | <a href="./public/auth/register.php">Register</a>
         </div>
 
         <div class="features">

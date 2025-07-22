@@ -59,7 +59,108 @@
   text-decoration: none;
   font-weight: 500;
   transition: background 0.2s;
+  border: none;
+  outline: none;
 }
 .dashboard-btn:hover {
   background: #225ea8;
+}
+/* .dashboard-btn:focus {
+  border: none;
+  outline: none;
+} */
+/* Modal Styles */
+.modal {
+  display: none; /* Hidden by default, shown via JS */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background: rgba(44, 62, 80, 0.25);
+  backdrop-filter: blur(2px);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: #fff;
+  margin: 5% auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+  padding: 32px 28px 24px 28px;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  animation: modalFadeIn 0.25s;
+}
+@keyframes modalFadeIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  color: #3182ce;
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close:hover {
+  color: #225ea8;
+}
+#addExpenseForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#addExpenseForm label {
+  font-weight: 500;
+  color: #2d3748;
+  margin-bottom: 2px;
+}
+#addExpenseForm input,
+#addExpenseForm textarea {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7fafc;
+  transition: border 0.2s;
+}
+#addExpenseForm input:focus,
+#addExpenseForm textarea:focus {
+  border: 1.5px solid #3182ce;
+  outline: none;
+  background: #fff;
+}
+#addExpenseForm button[type="submit"] {
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#addExpenseForm button[type="submit"]:hover {
+  background: #225ea8;
+}
+#expenseMsg {
+  font-size: 0.98rem;
+  min-height: 18px;
+  margin-top: 2px;
+  text-align: center;
 }
