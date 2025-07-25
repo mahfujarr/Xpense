@@ -69,6 +69,7 @@
   border: none;
   outline: none;
 } */
+
 /* Modal Styles */
 .modal {
   display: none; /* Hidden by default, shown via JS */
@@ -80,6 +81,7 @@
   height: 100vh;
   overflow: auto;
   background: rgba(44, 62, 80, 0.25);
+  -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   justify-content: center;
   align-items: center;
@@ -118,6 +120,9 @@
 .close:hover {
   color: #225ea8;
 }
+
+/* add expenses modal */
+
 #addExpenseForm {
   display: flex;
   flex-direction: column;
@@ -163,4 +168,121 @@
   min-height: 18px;
   margin-top: 2px;
   text-align: center;
+}
+/* Manage Categories Modal */
+#manageCategoriesForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#manageCategoriesForm label {
+  font-weight: 500;
+  color: #2d3748;
+  margin-bottom: 2px;
+}
+#manageCategoriesForm input,
+#manageCategoriesForm textarea {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7fafc;
+  transition: border 0.2s;
+}
+#manageCategoriesForm input:focus,
+#manageCategoriesForm textarea:focus {
+  border: 1.5px solid #3182ce;
+  outline: none;
+  background: #fff;
+}
+#manageCategoriesForm button[type="submit"] {
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#manageCategoriesForm button[type="submit"]:hover {
+  background: #225ea8;
+}
+#expenseMsg {
+  font-size: 0.98rem;
+  min-height: 18px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+/* Responsive */
+/* ...existing code... */
+
+/* Responsive Dashboard */
+@media (max-width: 900px) {
+  .dashboard {
+    max-width: 98vw;
+    padding: 16px;
+    margin: 20px auto;
+  }
+  .dashboard-cards {
+    gap: 16px;
+  }
+}
+@media (max-width: 600px) {
+  .dashboard-cards {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .dashboard-card {
+    width: 100%;
+    padding: 18px 10px;
+    font-size: 0.98rem;
+  }
+  .dashboard {
+    padding: 8px;
+    border-radius: 8px;
+  }
+  .modal-content {
+    padding: 18px 8px 14px 8px;
+    border-radius: 10px;
+    max-width: 98vw;
+  }
+}
+
+/* Responsive Modal */
+@media (max-width: 500px) {
+  .modal-content {
+    padding: 10px 4px 10px 4px;
+    max-width: 99vw;
+    font-size: 0.98rem;
+  }
+  .close {
+    top: 8px;
+    right: 12px;
+    font-size: 1.3rem;
+  }
+}
+
+/* Responsive Form */
+@media (max-width: 600px) {
+  #addExpenseForm,
+  #manageCategoriesForm {
+    gap: 10px;
+  }
+  #addExpenseForm input,
+  #addExpenseForm textarea,
+  #manageCategoriesForm input,
+  #manageCategoriesForm textarea {
+    font-size: 0.98rem;
+    padding: 7px 8px;
+  }
+  #addExpenseForm button[type="submit"],
+  #manageCategoriesForm button[type="submit"] {
+    padding: 8px 0;
+    font-size: 0.98rem;
+  }
 }

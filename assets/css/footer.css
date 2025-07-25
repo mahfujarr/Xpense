@@ -29,3 +29,15 @@
   color: #0056b3;
   text-decoration: underline;
 }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .footer {
+    padding: 0.7rem 0;
+    font-size: 0.98rem;
+  }
+  .footer .container {
+    padding: 0 8px;
+    font-size: 0.98rem;
+  }
+}

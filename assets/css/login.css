@@ -88,3 +88,27 @@ body {
   color: #0056b3;
   text-decoration: underline;
 }
+
+/* Responsive */
+@media (max-width: 500px) {
+  .login {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    border-radius: 8px;
+    margin: 1.2rem auto 1rem auto;
+  }
+  .login h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="password"] {
+    font-size: 0.98rem;
+    padding: 0.5rem 0.6rem;
+  }
+  .form-group button[type="submit"] {
+    font-size: 1rem;
+    padding: 0.6rem 0;
+  }
+}

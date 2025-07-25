@@ -27,13 +27,13 @@ $username = htmlspecialchars($_SESSION['username']);
                 <div class="dashboard-card">
                     <h3>Reports & Stats</h3>
                     <p>View insightful reports and statistics.</p>
-                    <a href="/public/reports.php" class="dashboard-btn">View Reports</a>
+                    <a href="#" class="dashboard-btn">View Reports</a>
                 </div>
                 <div class="dashboard-card">
                     <h3>Manage Categories</h3>
                     <p>Organize your spending by categories.</p>
-                    <a href="/public/categories.php" class="dashboard-btn">Manage Categories</a>
-                </div> 
+                    <button id="openManageCategoriesModal" class="dashboard-btn">Manage Categories</button>
+                </div>
             </div>
         </div>
     </div>
@@ -58,42 +58,28 @@ $username = htmlspecialchars($_SESSION['username']);
             </form>
         </div>
     </div>
-    <script>
-        // Modal open/close logic
-        const openBtn = document.getElementById('openAddExpenseModal');
-        const modal = document.getElementById('addExpenseModal');
-        const closeBtn = document.getElementById('closeAddExpenseModal');
-        openBtn.onclick = () => { modal.style.display = 'block'; };
-        closeBtn.onclick = () => { modal.style.display = 'none'; document.getElementById('expenseMsg').innerText = ''; };
-        window.onclick = (event) => { if (event.target == modal) { modal.style.display = 'none'; document.getElementById('expenseMsg').innerText = ''; } };
 
-        // AJAX form submission
-        document.getElementById('addExpenseForm').onsubmit = function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            fetch('/public/add_expense.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                const msg = document.getElementById('expenseMsg');
-                if (data.success) {
-                    msg.style.color = 'green';
-                    msg.innerText = 'Expense added successfully!';
-                    this.reset();
-                } else {
-                    msg.style.color = 'red';
-                    msg.innerText = data.error || 'Failed to add expense.';
-                }
-            })
-            .catch(() => {
-                const msg = document.getElementById('expenseMsg');
-                msg.style.color = 'red';
-                msg.innerText = 'An error occurred.';
-            });
-        };
-    </script>
+<!-- Manage Categories Modal -->
+<div id="manageCategoriesModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" id="closeManageCategoriesModal">&times;</span>
+        <h2>Manage Categories</h2>
+        <!-- Add Category Form -->
+        <form id="addCategoryForm" style="margin-bottom: 16px;">
+            <label for="newCategory">Add New Category:</label>
+            <input type="text" id="newCategory" name="newCategory" required>
+            <button type="submit">Add Category</button>
+            <div id="categoryMsg" style="margin-top:10px;"></div>
+        </form>
+        <!-- List of Existing Categories -->
+        <h3>Existing Categories</h3>
+        <ul id="categoryList" style="list-style: none; padding: 0;">
+            <!-- Categories will be loaded here dynamically -->
+        </ul>
+    </div>
+</div>
+
+    <script src="/assets/js/dashboard.js"></script>
 </body>
 
 </html>
