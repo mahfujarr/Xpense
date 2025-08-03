@@ -9,7 +9,7 @@ if (!$user_id) {
     exit();
 }
 
-$sql = "SELECT amount, category, expense_date, description FROM expenses WHERE user_id = ? ORDER BY expense_date DESC";
+$sql = "SELECT id, amount, category, expense_date, description FROM expenses WHERE user_id = ? ORDER BY expense_date DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $user_id);
 $stmt->execute();

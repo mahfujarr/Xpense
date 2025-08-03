@@ -18,7 +18,7 @@ openBtn.onclick = () => {
 }
 closeBtn.onclick = () => {
   modal.style.display = "none"
-  document.getElementById("expenseMsg").innerText = ""
+  // document.getElementById("expenseMsg").innerText = ""
 }
 window.onclick = (event) => {
   if (event.target === modal) {
@@ -45,7 +45,12 @@ document.getElementById("addExpenseForm").onsubmit = function (e) {
       if (data.success) {
         msg.style.color = "green"
         msg.innerText = "Expense added successfully!"
-        this.reset()
+        loadExpenseHistory()
+        setTimeout(() => {
+          this.reset()
+          msg.innerText = ""
+          modal.style.display = "none"
+        }, 2000)
       } else {
         msg.style.color = "red"
         msg.innerText = data.error || "Failed to add expense."
@@ -108,9 +113,7 @@ function groupByMonth(expenses) {
 
 function renderExpenseHistory(data) {
   const container = document.getElementById("expenseGroupedList")
-  // const totalDiv = document.getElementById("expenseTotal")
   container.innerHTML = ""
-  // totalDiv.innerText = `Total Expenses: ৳${data.total.toFixed(2)}`
 
   Object.entries(data.grouped).forEach(([month, entries]) => {
     const monthTitle = document.createElement("h3")
@@ -121,13 +124,49 @@ function renderExpenseHistory(data) {
     entries.forEach((exp) => {
       const entry = document.createElement("div")
       entry.className = "expense-entry"
+      // Ensure exp.id is a valid number
       entry.innerHTML = `
-        <strong>${exp.category}</strong> — ৳${parseFloat(exp.amount).toFixed(
+        <div>
+          <strong>${exp.category}</strong> — ৳${parseFloat(exp.amount).toFixed(
         2
       )} on ${exp.expense_date}<br>
-        <em>${exp.description || "No description"}</em>
+          <em>${exp.description || "No description"}</em>
+        </div>
+        <button class="delete-btn" data-id="${
+          exp.id !== undefined ? exp.id : ""
+        }">🗑️</button>
       `
       container.appendChild(entry)
+    })
+  })
+
+  container.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const expenseId = this.getAttribute("data-id")
+      // Defensive: check for valid id before sending request
+      if (!expenseId || isNaN(expenseId)) {
+        alert("Invalid expense ID. Cannot delete.")
+        return
+      }
+      if (confirm("Delete this expense?")) {
+        fetch("/public/delete_expense.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `id=${encodeURIComponent(expenseId)}`,
+        }).then((response) => {
+          if (response.ok) {
+            // Fade out the deleted item
+            const entry = this.parentElement
+            entry.style.transition = "opacity 0.5s ease-out"
+            entry.style.opacity = 0
+            setTimeout(() => entry.remove(), 500)
+          } else {
+            alert("Failed to delete expense.")
+          }
+        })
+      }
     })
   })
 }
