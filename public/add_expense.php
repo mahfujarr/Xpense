@@ -19,7 +19,7 @@ $category = isset($_POST['category']) ? trim($_POST['category']) : '';
 $expense_date = isset($_POST['date']) ? $_POST['date'] : '';
 $description = isset($_POST['description']) ? trim($_POST['description']) : '';
 
-if ($amount === null || $amount <= 0 || !$category || !$date) {
+if ($amount === null || $amount <= 0 || !$category || !$expense_date) {
     echo json_encode(['success' => false, 'error' => 'Please fill all required fields.']);
     exit();
 }
