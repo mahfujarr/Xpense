@@ -155,17 +155,25 @@ function renderExpenseHistory(data) {
             "Content-Type": "application/x-www-form-urlencoded",
           },
           body: `id=${encodeURIComponent(expenseId)}`,
-        }).then((response) => {
-          if (response.ok) {
-            // Fade out the deleted item
-            const entry = this.parentElement
-            entry.style.transition = "opacity 0.5s ease-out"
-            entry.style.opacity = 0
-            setTimeout(() => entry.remove(), 500)
-          } else {
-            alert("Failed to delete expense.")
-          }
         })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Fade out the deleted item
+              const entry = this.parentElement
+              entry.style.transition = "opacity 0.5s ease-out"
+              entry.style.opacity = 0
+              setTimeout(() => entry.remove(), 500)
+            } else {
+              alert(
+                `Failed to delete expense: ${data.error || "Unknown error"}`
+              )
+            }
+          })
+          .catch((error) => {
+            console.error("Delete error:", error)
+            alert("Network error occurred while deleting expense.")
+          })
       }
     })
   })
