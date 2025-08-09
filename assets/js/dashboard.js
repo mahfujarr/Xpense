@@ -25,6 +25,11 @@ window.onclick = (event) => {
     modal.style.display = "none"
     document.getElementById("expenseMsg").innerText = ""
   }
+  //edit Modal
+  if (event.target === editModal) {
+    editModal.style.display = "none"
+    document.getElementById("editExpenseMsg").innerText = ""
+  }
   //category Modal
   if (event.target === categoryModal) {
     categoryModal.style.display = "none"
@@ -61,6 +66,46 @@ document.getElementById("addExpenseForm").onsubmit = function (e) {
       msg.style.color = "red"
       msg.innerText = "An error occurred."
     })
+}
+
+// AJAX form submission for edit expense
+document.getElementById("editExpenseForm").onsubmit = function (e) {
+  e.preventDefault()
+  const formData = new FormData(this)
+  fetch("/public/edit_expense.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const msg = document.getElementById("editExpenseMsg")
+      if (data.success) {
+        msg.style.color = "green"
+        msg.innerText = "Expense updated successfully!"
+        loadExpenseHistory()
+        setTimeout(() => {
+          msg.innerText = ""
+          editModal.style.display = "none"
+        }, 2000)
+      } else {
+        msg.style.color = "red"
+        msg.innerText = data.error || "Failed to update expense."
+      }
+    })
+    .catch(() => {
+      const msg = document.getElementById("editExpenseMsg")
+      msg.style.color = "red"
+      msg.innerText = "An error occurred."
+    })
+}
+
+// Edit Expense Modal
+const editModal = document.getElementById("editExpenseModal")
+const closeEditBtn = document.getElementById("closeEditExpenseModal")
+
+closeEditBtn.onclick = () => {
+  editModal.style.display = "none"
+  document.getElementById("editExpenseMsg").innerText = ""
 }
 
 // Manage Categories Modal
@@ -124,7 +169,7 @@ function renderExpenseHistory(data) {
     entries.forEach((exp) => {
       const entry = document.createElement("div")
       entry.className = "expense-entry"
-      // Ensure exp.id is a valid number
+
       entry.innerHTML = `
         <div>
           <strong>${exp.category}</strong> — ৳${parseFloat(exp.amount).toFixed(
@@ -132,11 +177,47 @@ function renderExpenseHistory(data) {
       )} on ${exp.expense_date}<br>
           <em>${exp.description || "No description"}</em>
         </div>
-        <button class="delete-btn" data-id="${
-          exp.id !== undefined ? exp.id : ""
-        }">🗑️</button>
+        <div class="expense-actions">
+          <button class="edit-btn" data-id="${
+            exp.id !== undefined ? exp.id : ""
+          }" data-amount="${exp.amount}" data-category="${
+        exp.category
+      }" data-date="${exp.expense_date}" data-description="${
+        exp.description || ""
+      }">✏️</button>
+          <button class="delete-btn" data-id="${
+            exp.id !== undefined ? exp.id : ""
+          }">🗑️</button>
+        </div>
       `
       container.appendChild(entry)
+    })
+  })
+
+  // Add event listeners for edit buttons
+  container.querySelectorAll(".edit-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const expenseId = this.getAttribute("data-id")
+      const amount = this.getAttribute("data-amount")
+      const category = this.getAttribute("data-category")
+      const date = this.getAttribute("data-date")
+      const description = this.getAttribute("data-description")
+
+      // Defensive: check for valid id
+      if (!expenseId || isNaN(expenseId)) {
+        alert("Invalid expense ID. Cannot edit.")
+        return
+      }
+
+      // Populate the edit modal with current values
+      document.getElementById("editExpenseId").value = expenseId
+      document.getElementById("editAmount").value = amount
+      document.getElementById("editCategory").value = category
+      document.getElementById("editDate").value = date
+      document.getElementById("editDescription").value = description
+
+      // Show the edit modal
+      document.getElementById("editExpenseModal").style.display = "block"
     })
   })
 
@@ -160,7 +241,7 @@ function renderExpenseHistory(data) {
           .then((data) => {
             if (data.success) {
               // Fade out the deleted item
-              const entry = this.parentElement
+              const entry = this.parentElement.parentElement
               entry.style.transition = "opacity 0.5s ease-out"
               entry.style.opacity = 0
               setTimeout(() => entry.remove(), 500)

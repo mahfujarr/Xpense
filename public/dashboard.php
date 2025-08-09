@@ -74,6 +74,27 @@ $username = htmlspecialchars($_SESSION['username']);
             </div>
         </div>
 
+        <!-- Edit Expense Modal -->
+        <div id="editExpenseModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" id="closeEditExpenseModal">&times;</span>
+                <h2>Edit Expense</h2>
+                <form id="editExpenseForm">
+                    <input type="hidden" id="editExpenseId" name="id">
+                    <label for="editAmount">Amount:</label>
+                    <input type="number" id="editAmount" name="amount" required step="0.01" min="0">
+                    <label for="editCategory">Category:</label>
+                    <input type="text" id="editCategory" name="category" required>
+                    <label for="editDate">Date:</label>
+                    <input type="date" id="editDate" name="date" required>
+                    <label for="editDescription">Description:</label>
+                    <textarea id="editDescription" name="description" rows="2"></textarea>
+                    <button type="submit">Update Expense</button>
+                    <div id="editExpenseMsg" style="margin-top:10px;"></div>
+                </form>
+            </div>
+        </div>
+
         <!-- Manage Categories Modal -->
         <div id="manageCategoriesModal" class="modal" style="display:none;">
             <div class="modal-content">

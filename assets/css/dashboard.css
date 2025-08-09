@@ -363,8 +363,15 @@ body {
   padding: 8px;
   border-bottom: 1px solid #eee;
 }
-.expense-entry div {
+.expense-entry > div:first-child {
   flex: 1;
+}
+.expense-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 16px;
 }
 
 .expense-entry:last-child {
@@ -393,6 +400,83 @@ body {
 
 .delete-btn:hover {
   background-color: #d9363e;
+}
+
+#editExpenseForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#editExpenseForm label {
+  font-weight: 500;
+  color: #2d3748;
+  margin-bottom: 2px;
+}
+#editExpenseForm input,
+#editExpenseForm textarea {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7fafc;
+  transition: border 0.2s;
+}
+#editExpenseForm input:focus,
+#editExpenseForm textarea:focus {
+  border: 1.5px solid #3182ce;
+  outline: none;
+  background: #fff;
+}
+#editExpenseForm button[type="submit"] {
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#editExpenseForm button[type="submit"]:hover {
+  background: #225ea8;
+}
+#editExpenseMsg {
+  font-size: 0.98rem;
+  min-height: 18px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+.edit-btn {
+  background-color: #f7fafc;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #3182ce;
+}
+
+@media (max-width: 600px) {
+  #editExpenseForm {
+    gap: 10px;
+  }
+  #editExpenseForm input,
+  #editExpenseForm textarea {
+    font-size: 0.98rem;
+    padding: 7px 8px;
+  }
+  #editExpenseForm button[type="submit"] {
+    padding: 8px 0;
+    font-size: 0.98rem;
+  }
 }
 
 @keyframes fadeIn {
