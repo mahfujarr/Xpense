@@ -12,7 +12,6 @@ A lightweight, user-friendly expense tracking web app built with PHP and MySQL. 
 - 📅 Expense history grouped by month
 - 📊 Dashboard with summary cards
 - 🧠 Responsive design for mobile and desktop
-- 🔒 Secure environment configuration using `.env`
 
 ---
 

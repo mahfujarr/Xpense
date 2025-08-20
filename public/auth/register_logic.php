@@ -34,6 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("sss", $username, $email, $hashed_password);
 
             if ($stmt->execute()) {
+                $user_id = $conn->insert_id;
+                
+                // Add default categories for new user
+                $default_categories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Healthcare'];
+                $category_stmt = $conn->prepare("INSERT INTO categories (user_id, name) VALUES (?, ?)");
+                
+                foreach ($default_categories as $category) {
+                    $category_stmt->bind_param("is", $user_id, $category);
+                    $category_stmt->execute();
+                }
+                $category_stmt->close();
+                
                 $success = "Registration successful! You can now <a href='login.php'>login</a>";
             } else {
                 $errors[] = "Registration failed. Please try again.";

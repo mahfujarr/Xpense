@@ -6,6 +6,31 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $username = htmlspecialchars($_SESSION['username']);
+
+// Check if user has categories, if not add default ones
+require_once '../DB_conn.php';
+$user_id = $_SESSION['user_id'];
+
+$check_categories = $conn->prepare("SELECT COUNT(*) as count FROM categories WHERE user_id = ?");
+$check_categories->bind_param("i", $user_id);
+$check_categories->execute();
+$result = $check_categories->get_result();
+$category_count = $result->fetch_assoc()['count'];
+$check_categories->close();
+
+if ($category_count == 0) {
+    // Add default categories for existing users who don't have any
+    $default_categories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Healthcare'];
+    $category_stmt = $conn->prepare("INSERT INTO categories (user_id, name) VALUES (?, ?)");
+    
+    foreach ($default_categories as $category) {
+        $category_stmt->bind_param("is", $user_id, $category);
+        $category_stmt->execute();
+    }
+    $category_stmt->close();
+}
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +88,10 @@ $username = htmlspecialchars($_SESSION['username']);
                     <label for="amount">Amount:</label>
                     <input type="number" id="amount" name="amount" required step="0.01" min="0">
                     <label for="category">Category:</label>
-                    <input type="text" id="category" name="category" required>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <!-- Categories will be loaded here dynamically -->
+                    </select>
                     <label for="date">Date:</label>
                     <input type="date" id="date" name="date" required>
                     <label for="description">Description:</label>
@@ -84,7 +112,10 @@ $username = htmlspecialchars($_SESSION['username']);
                     <label for="editAmount">Amount:</label>
                     <input type="number" id="editAmount" name="amount" required step="0.01" min="0">
                     <label for="editCategory">Category:</label>
-                    <input type="text" id="editCategory" name="category" required>
+                    <select id="editCategory" name="category" required>
+                        <option value="">Select a category</option>
+                        <!-- Categories will be loaded here dynamically -->
+                    </select>
                     <label for="editDate">Date:</label>
                     <input type="date" id="editDate" name="date" required>
                     <label for="editDescription">Description:</label>
@@ -101,15 +132,15 @@ $username = htmlspecialchars($_SESSION['username']);
                 <span class="close" id="closeManageCategoriesModal">&times;</span>
                 <h2>Manage Categories</h2>
                 <!-- Add Category Form -->
-                <form id="addCategoryForm" style="margin-bottom: 16px;">
+                <form id="addCategoryForm">
                     <label for="newCategory">Add New Category:</label>
-                    <input type="text" id="newCategory" name="newCategory" required>
+                    <input type="text" id="newCategory" name="newCategory" placeholder="Enter category name" required>
                     <button type="submit">Add Category</button>
-                    <div id="categoryMsg" style="margin-top:10px;"></div>
+                    <div id="categoryMsg"></div>
                 </form>
                 <!-- List of Existing Categories -->
                 <h3>Existing Categories</h3>
-                <ul id="categoryList" style="list-style: none; padding: 0;">
+                <ul id="categoryList">
                     <!-- Categories will be loaded here dynamically -->
                 </ul>
             </div>
