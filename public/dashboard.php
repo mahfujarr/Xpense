@@ -20,9 +20,9 @@ $check_categories->close();
 
 if ($category_count == 0) {
     // Add default categories for existing users who don't have any
-    $default_categories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Healthcare'];
+    $default_categories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Education'];
     $category_stmt = $conn->prepare("INSERT INTO categories (user_id, name) VALUES (?, ?)");
-    
+
     foreach ($default_categories as $category) {
         $category_stmt->bind_param("is", $user_id, $category);
         $category_stmt->execute();
@@ -46,35 +46,112 @@ $conn->close();
                 <h2>Welcome, <?php echo $username; ?>!</h2>
                 <div class="dashboard-cards">
                     <div class="dashboard-card">
-                        <h3>Track Expenses</h3>
-                        <p>Log and manage your daily expenses easily.</p>
+                        <h3>Add Expense</h3>
+                        <p>Log your daily expenses.</p>
                         <button id="openAddExpenseModal" class="dashboard-btn">Add Expenses</button>
                     </div>
                     <div class="dashboard-card">
-                        <h3>Reports & Stats</h3>
-                        <p>View insightful reports and statistics.</p>
-                        <a href="#" class="dashboard-btn">View Reports</a>
+                        <h3>History</h3>
+                        <p>View all your expenses.</p>
+                        <a href="/public/reports.php" class="dashboard-btn">View History</a>
                     </div>
                     <div class="dashboard-card">
                         <h3>Manage Categories</h3>
-                        <p>Organize your spending by categories.</p>
+                        <p>Organize your categories.</p>
                         <button id="openManageCategoriesModal" class="dashboard-btn">Manage Categories</button>
                     </div>
                 </div>
-                <div id="expenseHistorySection" class="expense-history">
-                    <h2>Expense History</h2>
 
-                    <!-- group by div (added later) -->
-                    <div class="grouping-inline">
-                        <label for="groupFormat">Group By:</label>
-                        <select id="groupFormat">
-                            <option value="day" selected>Day</option>
-                            <option value="month">Month</option>
-                        </select>
+                <!-- Financial Statistics & Charts Section -->
+                <div class="statistics-section">
+                    <div class="section-header">
+                        <h2>Financial Overview</h2>
+                        <button id="refreshStats" class="refresh-btn" title="Refresh Statistics">
+                            <span>🔄</span> Refresh
+                        </button>
                     </div>
-                    <!-- <div id="expenseTotal" style="margin-bottom: 12px; font-weight: bold;"></div> -->
-                    <div id="expenseGroupedList"></div>
+
+                    <!-- Statistics Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-content">
+                                <h3>Total Expenses</h3>
+                                <p class="stat-value" id="totalExpenses">৳0.00</p>
+                                <p class="stat-period">This Month</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-content">
+                                <h3>Average Daily</h3>
+                                <p class="stat-value" id="avgDaily">৳0.00</p>
+                                <p class="stat-period">This Month</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <h3>Top Category</h3>
+                                <p class="stat-value" id="topCategory">-</p>
+                                <p class="stat-period">Highest Spending</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-content">
+                                <h3>Total Entries</h3>
+                                <p class="stat-value" id="totalEntries">0</p>
+                                <p class="stat-period">This Month</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Chart and Table Side by Side -->
+                    <div class="category-overview">
+                        <div class="chart-wrapper">
+                            <h3>Spending by Category</h3>
+                            <div class="chart-container">
+                                <canvas id="categoryPieChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="category-breakdown">
+                            <h3>Category Breakdown</h3>
+                            <div class="table-container">
+                                <table id="categoryTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Amount</th>
+                                            <th>Percentage</th>
+                                            <th>Entry Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="categoryTableBody">
+                                        <!-- Data will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="charts-container">
+                        <div class="chart-wrapper">
+                            <h3>Monthly Spending Trend</h3>
+                            <div class="chart-container">
+                                <canvas id="monthlyTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
+
             </div>
         </div>
 
@@ -102,29 +179,7 @@ $conn->close();
             </div>
         </div>
 
-        <!-- Edit Expense Modal -->
-        <div id="editExpenseModal" class="modal" style="display:none;">
-            <div class="modal-content">
-                <span class="close" id="closeEditExpenseModal">&times;</span>
-                <h2>Edit Expense</h2>
-                <form id="editExpenseForm">
-                    <input type="hidden" id="editExpenseId" name="id">
-                    <label for="editAmount">Amount:</label>
-                    <input type="number" id="editAmount" name="amount" required step="0.01" min="0">
-                    <label for="editCategory">Category:</label>
-                    <select id="editCategory" name="category" required>
-                        <option value="">Select a category</option>
-                        <!-- Categories will be loaded here dynamically -->
-                    </select>
-                    <label for="editDate">Date:</label>
-                    <input type="date" id="editDate" name="date" required>
-                    <label for="editDescription">Description:</label>
-                    <textarea id="editDescription" name="description" rows="2"></textarea>
-                    <button type="submit">Update Expense</button>
-                    <div id="editExpenseMsg" style="margin-top:10px;"></div>
-                </form>
-            </div>
-        </div>
+
 
         <!-- Manage Categories Modal -->
         <div id="manageCategoriesModal" class="modal" style="display:none;">
@@ -146,6 +201,7 @@ $conn->close();
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/assets/js/dashboard.js"></script>
 </body>
 

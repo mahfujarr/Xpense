@@ -25,11 +25,6 @@ window.onclick = (event) => {
     modal.style.display = "none"
     document.getElementById("expenseMsg").innerText = ""
   }
-  //edit Modal
-  if (event.target === editModal) {
-    editModal.style.display = "none"
-    document.getElementById("editExpenseMsg").innerText = ""
-  }
   //category Modal
   if (event.target === categoryModal) {
     categoryModal.style.display = "none"
@@ -51,6 +46,7 @@ document.getElementById("addExpenseForm").onsubmit = function (e) {
         msg.style.color = "green"
         msg.innerText = "Expense added successfully!"
         loadExpenseHistory()
+        loadFinancialStatistics() // Refresh statistics and charts
         setTimeout(() => {
           this.reset()
           msg.innerText = ""
@@ -66,46 +62,6 @@ document.getElementById("addExpenseForm").onsubmit = function (e) {
       msg.style.color = "red"
       msg.innerText = "An error occurred."
     })
-}
-
-// AJAX form submission for edit expense
-document.getElementById("editExpenseForm").onsubmit = function (e) {
-  e.preventDefault()
-  const formData = new FormData(this)
-  fetch("/public/edit_expense.php", {
-    method: "POST",
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      const msg = document.getElementById("editExpenseMsg")
-      if (data.success) {
-        msg.style.color = "green"
-        msg.innerText = "Expense updated successfully!"
-        loadExpenseHistory()
-        setTimeout(() => {
-          msg.innerText = ""
-          editModal.style.display = "none"
-        }, 2000)
-      } else {
-        msg.style.color = "red"
-        msg.innerText = data.error || "Failed to update expense."
-      }
-    })
-    .catch(() => {
-      const msg = document.getElementById("editExpenseMsg")
-      msg.style.color = "red"
-      msg.innerText = "An error occurred."
-    })
-}
-
-// Edit Expense Modal
-const editModal = document.getElementById("editExpenseModal")
-const closeEditBtn = document.getElementById("closeEditExpenseModal")
-
-closeEditBtn.onclick = () => {
-  editModal.style.display = "none"
-  document.getElementById("editExpenseMsg").innerText = ""
 }
 
 // Manage Categories Modal
@@ -187,20 +143,12 @@ function addCategoryToList(categoryName, categoryId = null) {
 // Function to add category to select dropdowns
 function addCategoryToSelects(categoryName) {
   const addExpenseSelect = document.getElementById("category")
-  const editExpenseSelect = document.getElementById("editCategory")
 
   if (addExpenseSelect) {
     const option = document.createElement("option")
     option.value = categoryName
     option.textContent = categoryName
     addExpenseSelect.appendChild(option)
-  }
-
-  if (editExpenseSelect) {
-    const option = document.createElement("option")
-    option.value = categoryName
-    option.textContent = categoryName
-    editExpenseSelect.appendChild(option)
   }
 }
 
@@ -241,18 +189,9 @@ function editCategory(button) {
 // Function to update category in select dropdowns
 function updateCategoryInSelects(oldName, newName) {
   const addExpenseSelect = document.getElementById("category")
-  const editExpenseSelect = document.getElementById("editCategory")
 
   if (addExpenseSelect) {
     const option = addExpenseSelect.querySelector(`option[value="${oldName}"]`)
-    if (option) {
-      option.value = newName
-      option.textContent = newName
-    }
-  }
-
-  if (editExpenseSelect) {
-    const option = editExpenseSelect.querySelector(`option[value="${oldName}"]`)
     if (option) {
       option.value = newName
       option.textContent = newName
@@ -298,19 +237,9 @@ function deleteCategory(button) {
 // Function to remove category from select dropdowns
 function removeCategoryFromSelects(categoryName) {
   const addExpenseSelect = document.getElementById("category")
-  const editExpenseSelect = document.getElementById("editCategory")
 
   if (addExpenseSelect) {
     const option = addExpenseSelect.querySelector(
-      `option[value="${categoryName}"]`
-    )
-    if (option) {
-      option.remove()
-    }
-  }
-
-  if (editExpenseSelect) {
-    const option = editExpenseSelect.querySelector(
       `option[value="${categoryName}"]`
     )
     if (option) {
@@ -361,7 +290,6 @@ function loadCategories() {
 // Function to populate category select dropdowns
 function populateCategorySelects(categories) {
   const addExpenseSelect = document.getElementById("category")
-  const editExpenseSelect = document.getElementById("editCategory")
 
   // Clear existing options (except the first placeholder)
   if (addExpenseSelect) {
@@ -371,16 +299,6 @@ function populateCategorySelects(categories) {
       option.value = category
       option.textContent = category
       addExpenseSelect.appendChild(option)
-    })
-  }
-
-  if (editExpenseSelect) {
-    editExpenseSelect.innerHTML = '<option value="">Select a category</option>'
-    categories.forEach((category) => {
-      const option = document.createElement("option")
-      option.value = category
-      option.textContent = category
-      editExpenseSelect.appendChild(option)
     })
   }
 }
@@ -544,9 +462,284 @@ function loadExpenseHistory() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadExpenseHistory()
   loadCategories() // Load categories to populate select dropdowns
-  document
-    .getElementById("groupFormat")
-    .addEventListener("change", loadExpenseHistory)
+  loadFinancialStatistics() // Load financial statistics and charts
+
+  // Add refresh button event listener
+  document.getElementById("refreshStats").addEventListener("click", () => {
+    loadFinancialStatistics()
+  })
 })
+
+// Financial Statistics and Charts Functions
+let categoryPieChart = null
+let monthlyTrendChart = null
+
+function loadFinancialStatistics() {
+  fetch("/public/get_expenses.php")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        updateStatistics(data.data)
+        createCategoryPieChart(data.data)
+        createMonthlyTrendChart(data.data)
+        updateCategoryTable(data.data)
+      }
+    })
+    .catch((error) => {
+      console.error("Error loading financial statistics:", error)
+    })
+}
+
+function updateStatistics(expenses) {
+  const currentMonth = new Date().getMonth()
+  const currentYear = new Date().getFullYear()
+
+  // Filter expenses for current month
+  const currentMonthExpenses = expenses.filter((exp) => {
+    const expDate = new Date(exp.expense_date)
+    return (
+      expDate.getMonth() === currentMonth &&
+      expDate.getFullYear() === currentYear
+    )
+  })
+
+  // Calculate total expenses for current month
+  const totalAmount = currentMonthExpenses.reduce(
+    (sum, exp) => sum + parseFloat(exp.amount),
+    0
+  )
+
+  // Calculate average daily spending
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+  const avgDaily = totalAmount / daysInMonth
+
+  // Find top spending category
+  const categoryTotals = {}
+  currentMonthExpenses.forEach((exp) => {
+    categoryTotals[exp.category] =
+      (categoryTotals[exp.category] || 0) + parseFloat(exp.amount)
+  })
+
+  const topCategory =
+    Object.keys(categoryTotals).reduce(
+      (a, b) => (categoryTotals[a] > categoryTotals[b] ? a : b),
+      Object.keys(categoryTotals)[0]
+    ) || "-"
+
+  // Update statistics display
+  document.getElementById(
+    "totalExpenses"
+  ).textContent = `৳${totalAmount.toFixed(2)}`
+  document.getElementById("avgDaily").textContent = `৳${avgDaily.toFixed(2)}`
+  document.getElementById("topCategory").textContent = topCategory
+  document.getElementById("totalEntries").textContent =
+    currentMonthExpenses.length
+}
+
+function createCategoryPieChart(expenses) {
+  const ctx = document.getElementById("categoryPieChart").getContext("2d")
+
+  // Calculate category totals
+  const categoryTotals = {}
+  expenses.forEach((exp) => {
+    categoryTotals[exp.category] =
+      (categoryTotals[exp.category] || 0) + parseFloat(exp.amount)
+  })
+
+  const labels = Object.keys(categoryTotals)
+  const data = Object.values(categoryTotals)
+
+  // Generate colors for categories
+  const colors = generateColors(labels.length)
+
+  if (categoryPieChart) {
+    categoryPieChart.destroy()
+  }
+
+  categoryPieChart = new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          data: data,
+          backgroundColor: colors,
+          borderColor: "#fff",
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            padding: 20,
+            usePointStyle: true,
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              const total = context.dataset.data.reduce((a, b) => a + b, 0)
+              const percentage = ((context.parsed / total) * 100).toFixed(1)
+              return `${context.label}: ৳${context.parsed.toFixed(
+                2
+              )} (${percentage}%)`
+            },
+          },
+        },
+      },
+    },
+  })
+}
+
+function createMonthlyTrendChart(expenses) {
+  const ctx = document.getElementById("monthlyTrendChart").getContext("2d")
+
+  // Group expenses by month for the last 6 months
+  const monthlyData = {}
+  const currentDate = new Date()
+
+  for (let i = 5; i >= 0; i--) {
+    const month = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - i,
+      1
+    )
+    const monthKey = month.toLocaleString("default", {
+      month: "short",
+      year: "2-digit",
+    })
+    monthlyData[monthKey] = 0
+  }
+
+  expenses.forEach((exp) => {
+    const expDate = new Date(exp.expense_date)
+    const monthKey = expDate.toLocaleString("default", {
+      month: "short",
+      year: "2-digit",
+    })
+    if (monthlyData.hasOwnProperty(monthKey)) {
+      monthlyData[monthKey] += parseFloat(exp.amount)
+    }
+  })
+
+  const labels = Object.keys(monthlyData)
+  const data = Object.values(monthlyData)
+
+  if (monthlyTrendChart) {
+    monthlyTrendChart.destroy()
+  }
+
+  monthlyTrendChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Monthly Spending",
+          data: data,
+          borderColor: "#3182ce",
+          backgroundColor: "rgba(49, 130, 206, 0.1)",
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: "#3182ce",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 2,
+          pointRadius: 6,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function (value) {
+              return "৳" + value.toFixed(0)
+            },
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return "৳" + context.parsed.y.toFixed(2)
+            },
+          },
+        },
+      },
+    },
+  })
+}
+
+function updateCategoryTable(expenses) {
+  const tbody = document.getElementById("categoryTableBody")
+  tbody.innerHTML = ""
+
+  // Calculate category statistics
+  const categoryStats = {}
+  expenses.forEach((exp) => {
+    if (!categoryStats[exp.category]) {
+      categoryStats[exp.category] = { amount: 0, count: 0 }
+    }
+    categoryStats[exp.category].amount += parseFloat(exp.amount)
+    categoryStats[exp.category].count += 1
+  })
+
+  // Calculate total for percentage
+  const totalAmount = Object.values(categoryStats).reduce(
+    (sum, stat) => sum + stat.amount,
+    0
+  )
+
+  // Sort categories by amount (descending)
+  const sortedCategories = Object.entries(categoryStats).sort(
+    (a, b) => b[1].amount - a[1].amount
+  )
+
+  sortedCategories.forEach(([category, stats]) => {
+    const percentage = ((stats.amount / totalAmount) * 100).toFixed(1)
+
+    const row = document.createElement("tr")
+    row.innerHTML = `
+      <td><strong>${category}</strong></td>
+      <td>৳${stats.amount.toFixed(2)}</td>
+      <td>${percentage}%</td>
+      <td>${stats.count}</td>
+    `
+    tbody.appendChild(row)
+  })
+}
+
+function generateColors(count) {
+  const colors = [
+    "#3182ce",
+    "#38a169",
+    "#d69e2e",
+    "#e53e3e",
+    "#805ad5",
+    "#dd6b20",
+    "#319795",
+    "#d53f8c",
+    "#2d3748",
+    "#4a5568",
+  ]
+
+  const result = []
+  for (let i = 0; i < count; i++) {
+    result.push(colors[i % colors.length])
+  }
+  return result
+}
