@@ -1,3 +1,4 @@
+/* Body Styles */
 body {
   background: #f8f9fa;
   color: #222;
@@ -6,6 +7,7 @@ body {
   padding: 0;
 }
 
+/* Centered Login Form */
 .login {
   background: #fff;
   max-width: 400px;
@@ -13,6 +15,21 @@ body {
   padding: 2.5rem 2rem 2rem 2rem;
   border-radius: 12px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .login h2 {
@@ -20,10 +37,12 @@ body {
   color: #007bff;
   margin-bottom: 2rem;
   letter-spacing: 1px;
+  font-size: 1.8rem;
 }
 
+/* Form Groups */
 .form-group {
-  margin-bottom: 1.3rem;
+  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
 }
@@ -34,6 +53,7 @@ body {
   font-size: 1rem;
 }
 
+/* Inputs */
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="password"] {
@@ -45,15 +65,16 @@ body {
   font-size: 1rem;
   outline: none;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, box-shadow 0.2s, border 0.2s;
 }
 
-.form-group input[type="text"]:focus,
-.form-group input[type="password"]:focus {
+.form-group input:focus {
   background: #e9ecef;
   box-shadow: 0 0 0 2px #007bff;
+  border-color: #007bff;
 }
 
+/* Buttons */
 .form-group button[type="submit"] {
   background: #007bff;
   color: #fff;
@@ -63,14 +84,15 @@ body {
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 
 .form-group button[type="submit"]:hover {
   background: #0056b3;
-  color: #fff;
+  transform: scale(1.02);
 }
 
+/* Links */
 .form-group p {
   text-align: center;
   color: #555;
@@ -81,7 +103,7 @@ body {
 .form-group a {
   color: #007bff;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.2s, text-decoration 0.2s;
 }
 
 .form-group a:hover {
@@ -89,7 +111,38 @@ body {
   text-decoration: underline;
 }
 
+/* Error & Success Messages */
+.form-group div {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
 /* Responsive */
+@media (max-width: 768px) {
+  .login {
+    margin: 2rem auto 1.5rem auto;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  .login h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="password"] {
+    font-size: 0.98rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .form-group button[type="submit"] {
+    font-size: 1rem;
+    padding: 0.65rem 0;
+  }
+}
+
 @media (max-width: 500px) {
   .login {
     max-width: 98vw;
@@ -97,18 +150,25 @@ body {
     border-radius: 8px;
     margin: 1.2rem auto 1rem auto;
   }
+
   .login h2 {
     font-size: 1.3rem;
     margin-bottom: 1.2rem;
   }
+
   .form-group input[type="text"],
   .form-group input[type="email"],
   .form-group input[type="password"] {
-    font-size: 0.98rem;
+    font-size: 0.95rem;
     padding: 0.5rem 0.6rem;
   }
+
   .form-group button[type="submit"] {
-    font-size: 1rem;
-    padding: 0.6rem 0;
+    font-size: 0.98rem;
+    padding: 0.55rem 0;
+  }
+
+  .form-group p {
+    font-size: 0.92rem;
   }
 }

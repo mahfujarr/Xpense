@@ -4,6 +4,10 @@
   padding: 1.2rem 0;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.03);
   margin-top: 20px;
+  font-family: "Segoe UI", sans-serif;
+  /* Optional sticky footer */
+  /* position: sticky;
+     bottom: 0; */
 }
 
 .footer .container {
@@ -11,10 +15,14 @@
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Allows wrapping on small screens */
+  gap: 6px; /* spacing between elements when wrapped */
 }
 
 .footer p {
-  margin: 0rem 0;
+  margin: 0;
   font-size: 1rem;
   color: #555;
 }
@@ -30,14 +38,33 @@
   text-decoration: underline;
 }
 
-/* Responsive */
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .footer p {
+    font-size: 0.98rem;
+  }
+}
+
 @media (max-width: 600px) {
   .footer {
     padding: 0.7rem 0;
-    font-size: 0.98rem;
+    font-size: 0.95rem;
   }
+
   .footer .container {
-    padding: 0 8px;
-    font-size: 0.98rem;
+    padding: 0 12px;
+    /* flex-direction: column; Stack vertically on small screens */
+    gap: 4px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .footer p {
+    font-size: 0.9rem;
+  }
+
+  .footer a {
+    font-size: 0.9rem;
   }
 }
