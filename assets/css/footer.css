@@ -16,7 +16,7 @@
   margin: 0 auto;
   text-align: center;
   display: flex;
-  justify-content: space-between;
+  justify-content:space-evenly;
   flex-wrap: wrap; /* Allows wrapping on small screens */
   gap: 6px; /* spacing between elements when wrapped */
 }
@@ -52,7 +52,7 @@
   }
 
   .footer .container {
-    padding: 0 12px;
+    /* padding: 0 12px; */
     /* flex-direction: column; Stack vertically on small screens */
     gap: 4px;
     font-size: 0.95rem;

@@ -21,7 +21,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
                 <li><a href="/public/dashboard.php"><?php echo htmlspecialchars($username ?? 'Dashboard'); ?></a></li>
                 <li class="logout"><a href="/public/auth/logout.php">Logout</a></li>
             <?php else: ?>
-                <li><a href="/index.php">Home</a></li>
+                <!-- <li><a href="/index.php">Home</a></li> -->
                 <li><a href="/public/auth/login.php">Login</a></li>
                 <li><a href="/public/auth/register.php">Register</a></li>
             <?php endif; ?>

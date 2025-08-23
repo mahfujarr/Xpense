@@ -58,7 +58,7 @@ $conn->close();
                     <div class="dashboard-card">
                         <h3>Manage Categories</h3>
                         <p>Organize your categories.</p>
-                        <button id="openManageCategoriesModal" class="dashboard-btn">Manage Categories</button>
+                        <button id="openManageCategoriesModal" class="dashboard-btn" title="Organize your categories">Manage Categories</button>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@ $conn->close();
                 <div class="statistics-section">
                     <div class="section-header">
                         <h2>Financial Overview</h2>
-                        <button id="refreshStats" class="refresh-btn" title="Refresh Statistics">
+                        <button id="refreshStats" class="dashboard-btn" title="Refresh Statistics">
                             <span>🔄</span> Refresh
                         </button>
                     </div>
