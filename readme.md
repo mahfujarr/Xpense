@@ -1,6 +1,6 @@
-# 🧾 PFT — Personal Finance Tracker
+# 🧾 Xpense — A Personal Finance Tracker
 
-A lightweight, user-friendly expense tracking web app built with PHP and MySQL. PFT helps users manage their daily expenses, categorize spending, and visualize financial habits.
+A lightweight, user-friendly expense tracking web app built with PHP and MySQL. Xpense helps users manage their daily expenses, categorize spending, and visualize financial habits.
 
 ---
 
@@ -9,7 +9,7 @@ A lightweight, user-friendly expense tracking web app built with PHP and MySQL. 
 - 🔐 User authentication (registration & login)
 - 💸 Add, edit, and delete expenses
 - 📂 Custom category management
-- 📅 Expense history grouped by month
+- 📅 Expense history grouped by month or day
 - 📊 Dashboard with summary cards
 - 🧠 Responsive design for mobile and desktop
 
@@ -30,7 +30,7 @@ A lightweight, user-friendly expense tracking web app built with PHP and MySQL. 
 ## File Breakdown
 
 - `DB_conn.php` — Manages your database connection (assuming you're using MySQL or similar).
-- `config.php` — Config settings for the app (likely includes DB credentials or site config).
+- `config.php` — Config settings for the app.
 - `index.php` — The default page that serves everything up.
 - `initiateDB.sql` — SQL script to create databases/tables to run the app.
 - `assets/` — Styles, images, scripts, etc.
