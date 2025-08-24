@@ -81,12 +81,6 @@ body {
   text-align: center;
   transition: box-shadow 0.2s, transform 0.3s ease;
 }
-.dashboard-card:hover {
-  /* box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1); */
-  transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.152);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 .dashboard-card h3 {
   margin-bottom: 12px;
   color: #3182ce;
@@ -104,9 +98,6 @@ body {
   border: none;
   outline: none;
   cursor: pointer;
-}
-.dashboard-btn:hover {
-  background: #225ea8;
 }
 /* .dashboard-btn:focus {
   border: none;
@@ -140,6 +131,12 @@ body {
   position: relative;
   animation: modalFadeIn 0.25s;
 }
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
 @keyframes modalFadeIn {
   from {
     transform: translateY(-30px);
@@ -159,9 +156,6 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: color 0.2s;
-}
-.close:hover {
-  color: #225ea8;
 }
 
 /* add expenses modal */
@@ -204,9 +198,6 @@ body {
   margin-top: 8px;
   cursor: pointer;
   transition: background 0.2s;
-}
-#addExpenseForm button[type="submit"]:hover {
-  background: #225ea8;
 }
 #expenseMsg {
   font-size: 0.98rem;
@@ -259,10 +250,6 @@ body {
   transition: background 0.2s;
 }
 
-#addCategoryForm button[type="submit"]:hover {
-  background: #225ea8;
-}
-
 #categoryMsg {
   font-size: 0.98rem;
   min-height: 18px;
@@ -300,12 +287,6 @@ body {
   transition: all 0.2s ease;
 }
 
-#categoryList li:hover {
-  background: #cee1f3;
-  border-color: #cbd5e1;
-  transform: scale(0.97);
-}
-
 #categoryList li:last-child {
   margin-bottom: 0;
 }
@@ -330,24 +311,12 @@ body {
   font-size: 0.9rem;
 }
 
-.category-actions button:hover {
-  background: #e2e8f0;
-}
-
 .category-actions .edit-category {
   color: #3182ce;
 }
 
 .category-actions .delete-category {
   color: #e53e3e;
-}
-
-.category-actions .edit-category:hover {
-  background: #66c0f4;
-}
-
-.category-actions .delete-category:hover {
-  background: #f56868;
 }
 
 /* Empty category list state */
@@ -458,7 +427,7 @@ body {
   margin-bottom: 12px;
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
-  color: #444;
+  /* color: #444; */
 }
 
 .grouping-inline label {
@@ -483,11 +452,11 @@ body {
 .expense-history {
   margin-top: 32px;
   padding: 20px;
-  background: #f7fafc;
+  /* background: #f7fafc; */
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
   font-family: "Segoe UI", sans-serif;
-  color: #333;
+  /* color: #333; */
 }
 
 .expense-history h2 {
@@ -509,8 +478,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
+  padding: 12px;
   border-bottom: 1px solid #eee;
+  border-radius: 6px;
+  box-shadow: inset 1px 1px 4px 3px rgba(0, 0, 0, 0.04);
+  margin-bottom: 12px;
 }
 .expense-entry > div:first-child {
   flex: 1;
@@ -545,10 +517,6 @@ body {
   font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-.delete-btn:hover {
-  background-color: #f56868;
 }
 
 #editExpenseForm {
@@ -590,9 +558,6 @@ body {
   cursor: pointer;
   transition: background 0.2s;
 }
-#editExpenseForm button:hover {
-  background: #225ea8;
-}
 #editExpenseMsg {
   font-size: 0.98rem;
   min-height: 18px;
@@ -609,10 +574,6 @@ body {
   font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-.edit-btn:hover {
-  background-color: #66c0f4;
 }
 
 @media (max-width: 600px) {
@@ -733,11 +694,6 @@ body {
   gap: 16px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: default;
-}
-
-.stat-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.152);
 }
 
 .stat-icon {
@@ -868,10 +824,6 @@ body {
   color: #334155;
 }
 
-#categoryTable tbody tr:hover {
-  background: #f8fafc;
-}
-
 /* Responsive adjustments for statistics */
 @media (max-width: 768px) {
   .statistics-section {
@@ -941,5 +893,56 @@ body {
     max-width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+  }
+}
+
+@media (hover: hover) {
+  .dashboard-card:hover {
+    /* box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1); */
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.152);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .dashboard-btn:hover {
+    background: #225ea8;
+  }
+  .close:hover {
+    color: #225ea8;
+  }
+  #addExpenseForm button[type="submit"]:hover {
+    background: #225ea8;
+  }
+  #addCategoryForm button[type="submit"]:hover {
+    background: #225ea8;
+  }
+  #categoryList li:hover {
+    background: #cee1f3;
+    border-color: #cbd5e1;
+    transform: scale(0.97);
+  }
+  .category-actions button:hover {
+    background: #e2e8f0;
+  }
+  .category-actions .edit-category:hover {
+    background: #66c0f4;
+  }
+  .category-actions .delete-category:hover {
+    background: #f56868;
+  }
+  .delete-btn:hover {
+    background-color: #f56868;
+  }
+  #editExpenseForm button:hover {
+    background: #225ea8;
+  }
+  .edit-btn:hover {
+    background-color: #66c0f4;
+  }
+  .stat-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.152);
+  }
+  #categoryTable tbody tr:hover {
+    background: #f8fafc;
   }
 }

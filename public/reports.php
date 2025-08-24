@@ -18,9 +18,10 @@ $username = htmlspecialchars($_SESSION['username']);
     <div class="wrapper">
         <div class="main-content">
             <div class="dashboard">
+                <a href="/public/dashboard.php" style="text-decoration: none; font-size: 1.2rem;" title="Back">⬅️</a>
                 <h2>All expenses of <?php echo $username; ?></h2>
                 <!-- <p class="reports-subtitle">Hey, <?php echo $username; ?>! You're viewing all your expense history.</p> -->
-                
+
                 <div id="expenseHistorySection" class="expense-history">
                     <!-- <h2>Expense History</h2> -->
 
@@ -32,7 +33,7 @@ $username = htmlspecialchars($_SESSION['username']);
                             <option value="month">Month</option>
                         </select>
                     </div>
-                    
+
                     <div id="expenseGroupedList"></div>
                 </div>
             </div>
@@ -62,7 +63,7 @@ $username = htmlspecialchars($_SESSION['username']);
             </div>
         </div>
     </div>
-    
+
     <script src="/assets/js/reports.js"></script>
 </body>
-</html> 
+</html>
