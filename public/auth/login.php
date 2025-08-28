@@ -20,12 +20,12 @@
             <?php endif; ?>
             <form action="login.php" method="post">
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="username">Username/Email:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username or email" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
                 <div class="form-group">
                     <button type="submit">Login</button>

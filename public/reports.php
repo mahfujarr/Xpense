@@ -9,7 +9,7 @@ $username = htmlspecialchars($_SESSION['username']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php $title = "Reports & Statistics | Xpense"; ?>
+<?php $title = "History | Xpense"; ?>
 <?php include './components/head.php'; ?>
 <?php include './components/navbar.php'; ?>
 <link rel="stylesheet" href="/assets/css/dashboard.css">

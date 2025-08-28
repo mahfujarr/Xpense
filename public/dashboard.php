@@ -34,7 +34,7 @@ $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php $title = "Dashboard | Xpense"; ?>
+<?php $title = "$username | Xpense"; ?>
 <?php include './components/head.php'; ?>
 <?php include './components/navbar.php'; ?>
 <link rel="stylesheet" href="/assets/css/dashboard.css">

@@ -7,10 +7,10 @@ body {
   padding: 0;
 }
 
-/* Centered Login Form */
 .login {
   background: #fff;
-  max-width: 400px;
+  width: 100%;
+  max-width: 300px;
   margin: 3rem auto 2rem auto;
   padding: 2.5rem 2rem 2rem 2rem;
   border-radius: 12px;
@@ -118,7 +118,6 @@ body {
   margin-top: 0.5rem;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .login {
     margin: 2rem auto 1.5rem auto;
