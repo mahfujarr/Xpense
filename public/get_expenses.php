@@ -9,7 +9,7 @@ if (!$user_id) {
     exit();
 }
 
-$sql = "SELECT id, amount, category, expense_date, description FROM expenses WHERE user_id = ? ORDER BY expense_date DESC";
+$sql = "SELECT e.id, e.amount, c.name as category, e.expense_date, e.description FROM expenses e JOIN categories c ON e.category_id = c.id WHERE e.user_id = ? ORDER BY e.expense_date DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $user_id);
 $stmt->execute();
@@ -20,3 +20,6 @@ while ($row = $result->fetch_assoc()) {
     $expenses[] = $row;
 }
 echo json_encode(['success' => true, 'data' => $expenses]);
+
+$stmt->close();
+$conn->close();

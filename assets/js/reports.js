@@ -53,7 +53,7 @@ function loadCategories() {
     .then((data) => {
       if (data.success) {
         // Populate the category select dropdowns in expense forms
-        populateCategorySelects(data.data.map((cat) => cat.name))
+        populateCategorySelects(data.data)
       } else {
         console.error("Failed to load categories:", data.error)
       }
@@ -71,8 +71,8 @@ function populateCategorySelects(categories) {
     editExpenseSelect.innerHTML = '<option value="">Select a category</option>'
     categories.forEach((category) => {
       const option = document.createElement("option")
-      option.value = category
-      option.textContent = category
+      option.value = category.id
+      option.textContent = category.name
       editExpenseSelect.appendChild(option)
     })
   }
@@ -170,10 +170,6 @@ function renderExpenseHistory(data) {
   container.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const expenseId = this.getAttribute("data-id")
-      const amount = this.getAttribute("data-amount")
-      const category = this.getAttribute("data-category")
-      const date = this.getAttribute("data-date")
-      const description = this.getAttribute("data-description")
 
       // Defensive: check for valid id
       if (!expenseId || isNaN(expenseId)) {
@@ -181,15 +177,29 @@ function renderExpenseHistory(data) {
         return
       }
 
-      // Populate the edit modal with current values
-      document.getElementById("editExpenseId").value = expenseId
-      document.getElementById("editAmount").value = amount
-      document.getElementById("editCategory").value = category
-      document.getElementById("editDate").value = date
-      document.getElementById("editDescription").value = description
+      // Fetch expense details with category_id
+      fetch(`/public/get_expense_details.php?id=${expenseId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            const expense = data.data
+            // Populate the edit modal with current values
+            document.getElementById("editExpenseId").value = expense.id
+            document.getElementById("editAmount").value = expense.amount
+            document.getElementById("editCategory").value = expense.category_id
+            document.getElementById("editDate").value = expense.expense_date
+            document.getElementById("editDescription").value = expense.description || ""
 
-      // Show the edit modal
-      document.getElementById("editExpenseModal").style.display = "block"
+            // Show the edit modal
+            document.getElementById("editExpenseModal").style.display = "block"
+          } else {
+            alert("Failed to load expense details: " + (data.error || "Unknown error"))
+          }
+        })
+        .catch((error) => {
+          console.error("Error loading expense details:", error)
+          alert("An error occurred while loading expense details.")
+        })
     })
   })
 

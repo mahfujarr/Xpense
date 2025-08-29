@@ -35,8 +35,8 @@ try {
     $check_stmt->close();
     
     // Check if category is being used in expenses
-    $expense_check = $conn->prepare("SELECT COUNT(*) as count FROM expenses WHERE user_id = ? AND category = ?");
-    $expense_check->bind_param("is", $user_id, $category_data['name']);
+    $expense_check = $conn->prepare("SELECT COUNT(*) as count FROM expenses WHERE user_id = ? AND category_id = ?");
+    $expense_check->bind_param("ii", $user_id, $category_id);
     $expense_check->execute();
     $expense_result = $expense_check->get_result();
     $expense_count = $expense_result->fetch_assoc()['count'];

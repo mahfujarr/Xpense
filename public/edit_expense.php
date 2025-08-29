@@ -17,11 +17,11 @@ require_once '../DB_conn.php';
 $user_id = $_SESSION['user_id'];
 $expense_id = isset($_POST['id']) ? intval($_POST['id']) : null;
 $amount = isset($_POST['amount']) ? floatval($_POST['amount']) : null;
-$category = isset($_POST['category']) ? trim($_POST['category']) : '';
+$category_id = isset($_POST['category']) ? intval($_POST['category']) : null;
 $expense_date = isset($_POST['date']) ? $_POST['date'] : '';
 $description = isset($_POST['description']) ? trim($_POST['description']) : '';
 
-if ($expense_id === null || $amount === null || $amount <= 0 || !$category || !$expense_date) {
+if ($expense_id === null || $amount === null || $amount <= 0 || !$category_id || !$expense_date) {
     echo json_encode(['success' => false, 'error' => 'Please fill all required fields.']);
     exit();
 }
@@ -44,14 +44,32 @@ if ($result->num_rows === 0) {
 }
 $verify_stmt->close();
 
+// Verify that the category belongs to the user
+$verify_category_stmt = $conn->prepare("SELECT id FROM categories WHERE id = ? AND user_id = ?");
+if (!$verify_category_stmt) {
+    echo json_encode(['success' => false, 'error' => 'Database error.']);
+    exit();
+}
+$verify_category_stmt->bind_param('ii', $category_id, $user_id);
+$verify_category_stmt->execute();
+$category_result = $verify_category_stmt->get_result();
+
+if ($category_result->num_rows === 0) {
+    echo json_encode(['success' => false, 'error' => 'Invalid category selected.']);
+    $verify_category_stmt->close();
+    $conn->close();
+    exit();
+}
+$verify_category_stmt->close();
+
 // Update the expense
-$stmt = $conn->prepare("UPDATE expenses SET amount = ?, category = ?, expense_date = ?, description = ? WHERE id = ? AND user_id = ?");
+$stmt = $conn->prepare("UPDATE expenses SET amount = ?, category_id = ?, expense_date = ?, description = ? WHERE id = ? AND user_id = ?");
 if (!$stmt) {
     echo json_encode(['success' => false, 'error' => 'Database error.']);
     exit();
 }
 
-$stmt->bind_param('dsssii', $amount, $category, $expense_date, $description, $expense_id, $user_id);
+$stmt->bind_param('dissii', $amount, $category_id, $expense_date, $description, $expense_id, $user_id);
 $success = $stmt->execute();
 
 if ($success && $stmt->affected_rows > 0) {

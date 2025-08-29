@@ -8,7 +8,7 @@ $user_id = $_SESSION['user_id'] ?? null;
 if (!$user_id) {
     http_response_code(401);
     echo json_encode(['success' => false, 'error' => 'Not authenticated']);
-    exit;
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$id) {
         http_response_code(400);
         echo json_encode(['success' => false, 'error' => 'Invalid ID']);
-        exit;
+        exit();
     }
     
     // Use MySQLi (consistent with get_expenses.php) and ensure user can only delete their own expenses
@@ -29,5 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(500);
         echo json_encode(['success' => false, 'error' => 'Delete failed or expense not found']);
     }
-    exit;
+    
+    $stmt->close();
+    $conn->close();
+    exit();
 }

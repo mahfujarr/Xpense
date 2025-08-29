@@ -137,16 +137,16 @@ function addCategoryToList(categoryName, categoryId = null) {
   categoryList.classList.remove("no-categories")
 
   // Also add to the expense form select dropdowns
-  addCategoryToSelects(categoryName)
+  addCategoryToSelects(categoryName, categoryId)
 }
 
 // Function to add category to select dropdowns
-function addCategoryToSelects(categoryName) {
+function addCategoryToSelects(categoryName, categoryId) {
   const addExpenseSelect = document.getElementById("category")
 
   if (addExpenseSelect) {
     const option = document.createElement("option")
-    option.value = categoryName
+    option.value = categoryId
     option.textContent = categoryName
     addExpenseSelect.appendChild(option)
   }
@@ -175,7 +175,7 @@ function editCategory(button) {
         if (data.success) {
           categoryName.textContent = newName.trim()
           // Also update the select dropdowns
-          updateCategoryInSelects(currentName, newName.trim())
+          updateCategoryInSelects(categoryId, newName.trim())
         } else {
           alert("Failed to update category: " + (data.error || "Unknown error"))
         }
@@ -187,13 +187,12 @@ function editCategory(button) {
 }
 
 // Function to update category in select dropdowns
-function updateCategoryInSelects(oldName, newName) {
+function updateCategoryInSelects(categoryId, newName) {
   const addExpenseSelect = document.getElementById("category")
 
   if (addExpenseSelect) {
-    const option = addExpenseSelect.querySelector(`option[value="${oldName}"]`)
+    const option = addExpenseSelect.querySelector(`option[value="${categoryId}"]`)
     if (option) {
-      option.value = newName
       option.textContent = newName
     }
   }
@@ -222,7 +221,7 @@ function deleteCategory(button) {
           setTimeout(() => {
             li.remove()
             // Also remove from the select dropdowns
-            removeCategoryFromSelects(categoryName)
+            removeCategoryFromSelects(categoryId)
           }, 300)
         } else {
           alert("Failed to delete category: " + (data.error || "Unknown error"))
@@ -235,12 +234,12 @@ function deleteCategory(button) {
 }
 
 // Function to remove category from select dropdowns
-function removeCategoryFromSelects(categoryName) {
+function removeCategoryFromSelects(categoryId) {
   const addExpenseSelect = document.getElementById("category")
 
   if (addExpenseSelect) {
     const option = addExpenseSelect.querySelector(
-      `option[value="${categoryName}"]`
+      `option[value="${categoryId}"]`
     )
     if (option) {
       option.remove()
@@ -272,7 +271,7 @@ function loadCategories() {
           })
 
           // Also populate the category select dropdowns in expense forms
-          populateCategorySelects(data.data.map((cat) => cat.name))
+          populateCategorySelects(data.data)
         }
       } else {
         console.error("Failed to load categories:", data.error)
@@ -296,8 +295,8 @@ function populateCategorySelects(categories) {
     addExpenseSelect.innerHTML = '<option value="">Select a category</option>'
     categories.forEach((category) => {
       const option = document.createElement("option")
-      option.value = category
-      option.textContent = category
+      option.value = category.id
+      option.textContent = category.name
       addExpenseSelect.appendChild(option)
     })
   }
@@ -393,15 +392,29 @@ function renderExpenseHistory(data) {
         return
       }
 
-      // Populate the edit modal with current values
-      document.getElementById("editExpenseId").value = expenseId
-      document.getElementById("editAmount").value = amount
-      document.getElementById("editCategory").value = category
-      document.getElementById("editDate").value = date
-      document.getElementById("editDescription").value = description
+      // Fetch expense details with category_id
+      fetch(`/public/get_expense_details.php?id=${expenseId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            const expense = data.data
+            // Populate the edit modal with current values
+            document.getElementById("editExpenseId").value = expense.id
+            document.getElementById("editAmount").value = expense.amount
+            document.getElementById("editCategory").value = expense.category_id
+            document.getElementById("editDate").value = expense.expense_date
+            document.getElementById("editDescription").value = expense.description || ""
 
-      // Show the edit modal
-      document.getElementById("editExpenseModal").style.display = "block"
+            // Show the edit modal
+            document.getElementById("editExpenseModal").style.display = "block"
+          } else {
+            alert("Failed to load expense details: " + (data.error || "Unknown error"))
+          }
+        })
+        .catch((error) => {
+          console.error("Error loading expense details:", error)
+          alert("An error occurred while loading expense details.")
+        })
     })
   })
 
