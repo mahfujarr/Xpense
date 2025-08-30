@@ -173,7 +173,7 @@ $conn->close();
                     <input type="date" id="date" name="date" required>
                     <label for="description">Description:</label>
                     <textarea id="description" name="description" rows="2"></textarea>
-                    <button type="submit">Add Expense</button>
+                    <button type="submit" id="addExpenseButton">Add Expense</button>
                     <div id="expenseMsg" style="margin-top:10px;"></div>
                 </form>
             </div>
@@ -201,7 +201,7 @@ $conn->close();
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/assets/js/chart.js"></script>
     <script src="/assets/js/dashboard.js"></script>
 </body>
 

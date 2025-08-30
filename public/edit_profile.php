@@ -70,11 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <?php $title = "Edit Profile | Xpense"; ?>
-    <?php include './components/head.php'; ?>
-    <?php include './components/navbar.php'; ?>
+<?php $title = "Edit Profile | Xpense"; ?>
+<?php include './components/head.php'; ?>
+<?php include './components/navbar.php'; ?>
 
-    <link rel="stylesheet" href="/assets/css/login.css">
+<link rel="stylesheet" href="/assets/css/login.css">
 
 <body>
     <div class="main-content">
@@ -114,4 +114,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php include './components/footer.php'; ?>
 </body>
+
 </html>

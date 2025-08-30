@@ -33,6 +33,7 @@ window.onclick = (event) => {
 
 // AJAX form submission
 document.getElementById("addExpenseForm").onsubmit = function (e) {
+  document.getElementById("addExpenseButton").disabled = true
   e.preventDefault()
   const formData = new FormData(this)
   fetch("/public/add_expense.php", {
@@ -44,14 +45,22 @@ document.getElementById("addExpenseForm").onsubmit = function (e) {
       const msg = document.getElementById("expenseMsg")
       if (data.success) {
         msg.style.color = "green"
-        msg.innerText = "Expense added successfully!"
+        let countdown = 2
+        msg.innerText = `Expense added successfully! Closing in ${countdown}...`
         loadExpenseHistory()
         loadFinancialStatistics() // Refresh statistics and charts
-        setTimeout(() => {
-          this.reset()
-          msg.innerText = ""
-          modal.style.display = "none"
-        }, 2000)
+
+        const interval = setInterval(() => {
+          countdown--
+          if (countdown > 0) {
+            msg.innerText = `Expense added successfully! Closing in ${countdown}...`
+          } else {
+            clearInterval(interval)
+            this.reset()
+            msg.innerText = ""
+            modal.style.display = "none"
+          }
+        }, 1000)
       } else {
         msg.style.color = "red"
         msg.innerText = data.error || "Failed to add expense."
@@ -191,7 +200,9 @@ function updateCategoryInSelects(categoryId, newName) {
   const addExpenseSelect = document.getElementById("category")
 
   if (addExpenseSelect) {
-    const option = addExpenseSelect.querySelector(`option[value="${categoryId}"]`)
+    const option = addExpenseSelect.querySelector(
+      `option[value="${categoryId}"]`
+    )
     if (option) {
       option.textContent = newName
     }
@@ -403,12 +414,16 @@ function renderExpenseHistory(data) {
             document.getElementById("editAmount").value = expense.amount
             document.getElementById("editCategory").value = expense.category_id
             document.getElementById("editDate").value = expense.expense_date
-            document.getElementById("editDescription").value = expense.description || ""
+            document.getElementById("editDescription").value =
+              expense.description || ""
 
             // Show the edit modal
             document.getElementById("editExpenseModal").style.display = "block"
           } else {
-            alert("Failed to load expense details: " + (data.error || "Unknown error"))
+            alert(
+              "Failed to load expense details: " +
+                (data.error || "Unknown error")
+            )
           }
         })
         .catch((error) => {

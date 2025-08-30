@@ -56,4 +56,4 @@ if ($success) {
     echo json_encode(['success' => false, 'error' => 'Failed to add expense.']);
 }
 $stmt->close();
-$conn->close(); 
+$conn->close();

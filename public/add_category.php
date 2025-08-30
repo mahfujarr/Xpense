@@ -30,22 +30,22 @@ try {
     $check_stmt->bind_param("is", $user_id, $category_name);
     $check_stmt->execute();
     $check_result = $check_stmt->get_result();
-    
+
     if ($check_result->num_rows > 0) {
         echo json_encode(['success' => false, 'error' => 'Category already exists']);
         $check_stmt->close();
         exit();
     }
     $check_stmt->close();
-    
+
     // Insert new category
     $stmt = $conn->prepare("INSERT INTO categories (user_id, name) VALUES (?, ?)");
     $stmt->bind_param("is", $user_id, $category_name);
-    
+
     if ($stmt->execute()) {
         $category_id = $conn->insert_id;
         echo json_encode([
-            'success' => true, 
+            'success' => true,
             'message' => 'Category added successfully',
             'data' => [
                 'id' => $category_id,
@@ -55,12 +55,10 @@ try {
     } else {
         echo json_encode(['success' => false, 'error' => 'Failed to add category']);
     }
-    
+
     $stmt->close();
-    
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 
 $conn->close();
-?> 

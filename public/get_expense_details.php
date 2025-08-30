@@ -31,19 +31,17 @@ try {
     $stmt->bind_param('ii', $expense_id, $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result->num_rows === 0) {
         echo json_encode(['success' => false, 'error' => 'Expense not found or access denied.']);
         exit();
     }
-    
+
     $expense = $result->fetch_assoc();
     echo json_encode(['success' => true, 'data' => $expense]);
-    
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 
 $stmt->close();
 $conn->close();
-?>

@@ -66,4 +66,5 @@ $username = htmlspecialchars($_SESSION['username']);
 
     <script src="/assets/js/reports.js"></script>
 </body>
+
 </html>

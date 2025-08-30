@@ -31,34 +31,34 @@ try {
     $check_stmt->bind_param("ii", $category_id, $user_id);
     $check_stmt->execute();
     $check_result = $check_stmt->get_result();
-    
+
     if ($check_result->num_rows === 0) {
         echo json_encode(['success' => false, 'error' => 'Category not found or access denied']);
         $check_stmt->close();
         exit();
     }
     $check_stmt->close();
-    
+
     // Check if new name already exists for this user (excluding current category)
     $duplicate_stmt = $conn->prepare("SELECT id FROM categories WHERE user_id = ? AND name = ? AND id != ?");
     $duplicate_stmt->bind_param("isi", $user_id, $category_name, $category_id);
     $duplicate_stmt->execute();
     $duplicate_result = $duplicate_stmt->get_result();
-    
+
     if ($duplicate_result->num_rows > 0) {
         echo json_encode(['success' => false, 'error' => 'Category name already exists']);
         $duplicate_stmt->close();
         exit();
     }
     $duplicate_stmt->close();
-    
+
     // Update category
     $stmt = $conn->prepare("UPDATE categories SET name = ? WHERE id = ? AND user_id = ?");
     $stmt->bind_param("sii", $category_name, $category_id, $user_id);
-    
+
     if ($stmt->execute()) {
         echo json_encode([
-            'success' => true, 
+            'success' => true,
             'message' => 'Category updated successfully',
             'data' => [
                 'id' => $category_id,
@@ -68,12 +68,10 @@ try {
     } else {
         echo json_encode(['success' => false, 'error' => 'Failed to update category']);
     }
-    
+
     $stmt->close();
-    
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 
 $conn->close();
-?> 

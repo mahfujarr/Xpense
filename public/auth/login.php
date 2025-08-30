@@ -30,12 +30,21 @@
                 <div class="form-group">
                     <button type="submit">Login</button>
                 </div>
+                <div class="form-group" id="forgotPassword">
+                    <p><a href="#">Forgot password?</a></p>
+                </div>
                 <div class="form-group">
                     <p>Don't have an account? <a href="register.php">Register here</a></p>
                 </div>
             </form>
         </div>
     </div>
+    <script>
+        document.getElementById('forgotPassword').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('forgotPassword').innerHTML = '<p style="color:#007bff;font-weight:600;font-size:1.2rem;cursor:default;">Cry about it 🤣</p>';
+        };
+    </script>
     <?php include '../components/footer.php'; ?>
 </body>
 

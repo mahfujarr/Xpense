@@ -28,12 +28,20 @@ document.getElementById("editExpenseForm").onsubmit = function (e) {
       const msg = document.getElementById("editExpenseMsg")
       if (data.success) {
         msg.style.color = "green"
-        msg.innerText = "Expense updated successfully!"
+        let countdown = 2
+        msg.innerText = `Expense updated successfully! Closing in ${countdown}...`
         loadExpenseHistory()
-        setTimeout(() => {
-          msg.innerText = ""
-          editModal.style.display = "none"
-        }, 2000)
+        const interval = setInterval(() => {
+          countdown--
+          if (countdown > 0) {
+            msg.innerText = `Expense updated successfully! Closing in ${countdown}...`
+          } else {
+            clearInterval(interval)
+            this.reset()
+            msg.innerText = ""
+            editModal.style.display = "none"
+          }
+        }, 1000)
       } else {
         msg.style.color = "red"
         msg.innerText = data.error || "Failed to update expense."
@@ -171,7 +179,6 @@ function renderExpenseHistory(data) {
     btn.addEventListener("click", function () {
       const expenseId = this.getAttribute("data-id")
 
-      // Defensive: check for valid id
       if (!expenseId || isNaN(expenseId)) {
         alert("Invalid expense ID. Cannot edit.")
         return
@@ -188,12 +195,16 @@ function renderExpenseHistory(data) {
             document.getElementById("editAmount").value = expense.amount
             document.getElementById("editCategory").value = expense.category_id
             document.getElementById("editDate").value = expense.expense_date
-            document.getElementById("editDescription").value = expense.description || ""
+            document.getElementById("editDescription").value =
+              expense.description || ""
 
             // Show the edit modal
             document.getElementById("editExpenseModal").style.display = "block"
           } else {
-            alert("Failed to load expense details: " + (data.error || "Unknown error"))
+            alert(
+              "Failed to load expense details: " +
+                (data.error || "Unknown error")
+            )
           }
         })
         .catch((error) => {
@@ -206,7 +217,6 @@ function renderExpenseHistory(data) {
   container.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const expenseId = this.getAttribute("data-id")
-      // Defensive: check for valid id before sending request
       if (!expenseId || isNaN(expenseId)) {
         alert("Invalid expense ID. Cannot delete.")
         return

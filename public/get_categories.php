@@ -16,7 +16,7 @@ try {
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     $categories = [];
     while ($row = $result->fetch_assoc()) {
         $categories[] = [
@@ -24,13 +24,11 @@ try {
             'name' => $row['name']
         ];
     }
-    
+
     echo json_encode(['success' => true, 'data' => $categories]);
-    
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 
 $stmt->close();
 $conn->close();
-?>
