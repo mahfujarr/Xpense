@@ -33,7 +33,8 @@ window.onclick = (event) => {
 
 // AJAX form submission
 document.getElementById("addExpenseForm").onsubmit = function (e) {
-  document.getElementById("addExpenseButton").disabled = true
+  const addBtn = document.getElementById("addExpenseButton")
+  addBtn.disabled = true
   e.preventDefault()
   const formData = new FormData(this)
   fetch("/public/add_expense.php", {
@@ -59,18 +60,28 @@ document.getElementById("addExpenseForm").onsubmit = function (e) {
             this.reset()
             msg.innerText = ""
             modal.style.display = "none"
+            addBtn.disabled = false // Re-enable button after closing
           }
         }, 1000)
       } else {
         msg.style.color = "red"
         msg.innerText = data.error || "Failed to add expense."
+        addBtn.disabled = false // Re-enable button on error
       }
     })
     .catch(() => {
       const msg = document.getElementById("expenseMsg")
       msg.style.color = "red"
       msg.innerText = "An error occurred."
+      addBtn.disabled = false // Re-enable button on error
     })
+}
+
+// Re-enable the button when modal is opened
+openBtn.onclick = () => {
+  modal.style.display = "block"
+  setTodayDate()
+  document.getElementById("addExpenseButton").disabled = false
 }
 
 // Manage Categories Modal
