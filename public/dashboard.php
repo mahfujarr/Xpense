@@ -45,20 +45,20 @@ $conn->close();
             <div class="dashboard">
                 <h2>Welcome, <?php echo $username; ?>!</h2>
                 <div class="dashboard-cards">
-                    <div class="dashboard-card">
+                    <div class="dashboard-card clickable-card" id="addExpenseCard">
+                        <div class="card-icon">💸</div>
                         <h3>Add Expense</h3>
                         <p>Log your daily expenses.</p>
-                        <button id="openAddExpenseModal" class="dashboard-btn">Add Expenses</button>
                     </div>
-                    <div class="dashboard-card">
+                    <div class="dashboard-card clickable-card" id="historyCard">
+                        <div class="card-icon">📋</div>
                         <h3>History</h3>
                         <p>View all your expenses.</p>
-                        <a href="/public/reports.php" class="dashboard-btn">View History</a>
                     </div>
-                    <div class="dashboard-card">
+                    <div class="dashboard-card clickable-card" id="manageCategoriesCard">
+                        <div class="card-icon">🏷️</div>
                         <h3>Manage Categories</h3>
                         <p>Organize your categories.</p>
-                        <button id="openManageCategoriesModal" class="dashboard-btn" title="Organize your categories">Manage Categories</button>
                     </div>
                 </div>
 
@@ -159,7 +159,7 @@ $conn->close();
         <!-- Add Expense Modal -->
         <div id="addExpenseModal" class="modal" style="display:none;">
             <div class="modal-content">
-                <span class="close" id="closeAddExpenseModal">&times;</span>
+                <span class="close" id="closeAddExpenseModal">❌</span>
                 <h2>Add Expense</h2>
                 <form id="addExpenseForm">
                     <label for="amount">Amount:</label>
@@ -184,7 +184,7 @@ $conn->close();
         <!-- Manage Categories Modal -->
         <div id="manageCategoriesModal" class="modal" style="display:none;">
             <div class="modal-content">
-                <span class="close" id="closeManageCategoriesModal">&times;</span>
+                <span class="close" id="closeManageCategoriesModal">❌</span>
                 <h2>Manage Categories</h2>
                 <!-- Add Category Form -->
                 <form id="addCategoryForm">

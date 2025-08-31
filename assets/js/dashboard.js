@@ -1,5 +1,5 @@
 //Add expense Modal
-const openBtn = document.getElementById("openAddExpenseModal")
+const addExpenseCard = document.getElementById("addExpenseCard")
 const modal = document.getElementById("addExpenseModal")
 const closeBtn = document.getElementById("closeAddExpenseModal")
 
@@ -12,7 +12,7 @@ function setTodayDate() {
   document.getElementById("date").value = formattedDate
 }
 
-openBtn.onclick = () => {
+addExpenseCard.onclick = () => {
   modal.style.display = "block"
   setTodayDate()
 }
@@ -78,20 +78,26 @@ document.getElementById("addExpenseForm").onsubmit = function (e) {
 }
 
 // Re-enable the button when modal is opened
-openBtn.onclick = () => {
+addExpenseCard.onclick = () => {
   modal.style.display = "block"
   setTodayDate()
   document.getElementById("addExpenseButton").disabled = false
 }
 
 // Manage Categories Modal
-const openCategoryBtn = document.getElementById("openManageCategoriesModal")
+const manageCategoriesCard = document.getElementById("manageCategoriesCard")
 const categoryModal = document.getElementById("manageCategoriesModal")
 const closeCategoryBtn = document.getElementById("closeManageCategoriesModal")
 
-openCategoryBtn.onclick = () => {
+manageCategoriesCard.onclick = () => {
   categoryModal.style.display = "block"
   loadCategories() // Load existing categories when modal opens
+}
+
+// History Card Navigation
+const historyCard = document.getElementById("historyCard")
+historyCard.onclick = () => {
+  window.location.href = "/public/reports.php"
 }
 
 closeCategoryBtn.onclick = () => {

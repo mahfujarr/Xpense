@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
         <ul class="nav-links" id="nav-links">
             <?php if (isset($_SESSION['user_id'])): ?>
-                <li><a href="/public/dashboard.php"><?php echo htmlspecialchars($username ?? 'Dashboard'); ?></a></li>
+                <!-- <li><a href="/public/dashboard.php"><?php echo htmlspecialchars($username ?? 'Dashboard'); ?></a></li> -->
                 <li><a href="/public/edit_profile.php">Edit Profile</a></li>
                 <li class="logout"><a href="/public/auth/logout.php">Logout</a></li>
             <?php else: ?>
