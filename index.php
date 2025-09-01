@@ -27,13 +27,49 @@ if (isset($_SESSION['user_id'])) {
 
         <!-- Features Section -->
         <section class="features">
-            <h2>Features</h2>
-            <ul>
-                <li>📊 Track your expenses easily</li>
-                <li>📈 View reports and statistics</li>
-                <li>🔒 Secure and private</li>
-                <li>🌍 Accessible from anywhere</li>
-            </ul>
+            <h2>Why Choose Xpense?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Expense Tracking</h3>
+                    <p>Easily add, edit, and categorize your daily expenses with our intuitive interface</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Visual Reports</h3>
+                    <p>Generate detailed charts and graphs to visualize your spending patterns</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏷️</div>
+                    <h3>Custom Categories</h3>
+                    <p>Create and manage personalized expense categories to organize your finances</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Budget Analysis</h3>
+                    <p>Track your spending trends and identify areas for financial improvement</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure & Private</h3>
+                    <p>Your financial data is protected with secure authentication and encryption</p>
+                </div>
+                <!-- <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Responsive Design</h3>
+                    <p>Access your expense tracker from any device - desktop, tablet, or mobile</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Quick Entry</h3>
+                    <p>Add expenses in seconds with our streamlined input forms and validation</p>
+                </div> -->
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Web Based tracking</h3>
+                    <p>No need to download any app. Just open your browser and start tracking your expenses.</p>
+                </div>
+            </div>
         </section>
 
     </main>
